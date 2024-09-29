@@ -127,7 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\abstract-fabric\abstract-fabric.cpp" />
     <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\builder\BattleMapGenerator.h" />
+    <ClInclude Include="src\builder\CanGenerateBattleMap.h" />
+    <ClInclude Include="src\builder\MapGenerationDirector.h" />
+    <ClInclude Include="src\builder\MapGenerator.h" />
+    <ClInclude Include="src\prototype\prototype.h" />
+    <ClInclude Include="src\singleton\singleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
