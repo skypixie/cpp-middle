@@ -2,92 +2,66 @@
 #include <vector>
 
 
-class Integers
+template <typename T>
+class VectorForwardIterator
 {
-public:
-    
-    class VectorForwardIterator
-    {
-    private:
-        int* cur_ = nullptr;
-
-    public:
-        VectorForwardIterator(int* first_el) : cur_(first_el) {}
-
-        int& operator*() const
-        {
-            return *cur_;
-        }
-    
-        int* operator->() const
-        {
-            return cur_;
-        }
-
-        friend bool operator==(const VectorForwardIterator& a, const VectorForwardIterator& b)
-        {
-            return a.cur_ == b.cur_;
-        }
-
-        friend bool operator!=(const VectorForwardIterator& a, const VectorForwardIterator& b)
-        {
-            return a.cur_ != b.cur_;
-        }
-
-        VectorForwardIterator& operator++()
-        {
-            ++cur_;
-            return *this;
-        }
-    
-        VectorForwardIterator& operator++(int)
-        {
-            VectorForwardIterator tmp = *this;
-            ++(*this);
-            return tmp;
-        }
-    };
-
-    VectorForwardIterator begin()
-    {
-        return VectorForwardIterator(&data_[0]);
-    }
-
-    VectorForwardIterator end()
-    {
-        return VectorForwardIterator(&data_[data_.size() - 1]);
-    }
-    
 private:
-    std::vector<int> data_ {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    const std::vector<T>& data_;
+    size_t index_;
+
+public:
+    VectorForwardIterator(const std::vector<T>& data, size_t index) : data_(data), index_(index) {}
+
+    // возвращаем сам объект
+    const T& operator*() const
+    {
+        return data_[index_];
+    }
+
+    // возвращаем указатель на объект
+    const T* operator->() const
+    {
+        return &data_[index_];
+    }
+
+    friend bool operator==(const VectorForwardIterator<T>& a, const VectorForwardIterator<T>& b)
+    {
+        return a.index_ == b.index_;
+    }
+
+    friend bool operator!=(const VectorForwardIterator<T>& a, const VectorForwardIterator<T>& b)
+    {
+        return a.index_ != b.index_;
+    }
+
+    // возвращает уже измененный итератор
+    const VectorForwardIterator<T>& operator++()
+    {
+        ++index_;
+        return *this;
+        
+    }
+
+    // инкрементирует и возвращает не измененный итератор
+    const VectorForwardIterator<T>& operator++(int)
+    {
+        VectorForwardIterator<T> tmp = *this;
+        ++(*this);
+        return tmp;
+    }
 };
+
 
 int main()
 {
-    
-    Integers integers;
-    std::fill(integers.begin(), integers.end(), 3);
-    
-    for (auto i : integers)
+    // создаем вектор
+    std::vector<int> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // создаем итератор на начало и конец
+    VectorForwardIterator<int> it(data, 0);
+    VectorForwardIterator<int> it_end(data, data.size());
+    // проходим по вектору с помощью нашего итератора и выводим элементы
+    for (; it != it_end; ++it)
     {
-        std::cout << i << '\n';
+        std::cout << *it << '\n';
     }
-
-    // ВИДИМО ТО, ЧТО ТРЕБОВАЛОСЬ!!!! =)
-    std::vector<int> myVector;
-    for (int count=0; count < 5; ++count)
-    {
-        myVector.push_back(count);
-    }
-    
-    std::fill(myVector.begin(), myVector.end(), 10);
-    std::vector<int>::const_iterator it;
-    it = myVector.begin();
-    while (it != myVector.end())
-    {
-        std::cout << *it << " ";
-        ++it;
-    }
- 
-    std::cout << '\n';
 }
